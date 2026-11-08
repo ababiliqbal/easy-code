@@ -1,0 +1,41 @@
+# EASYCODE SYSTEM INSTRUCTIONS & AI AGENT RULES
+
+You are a Principal Full-Stack Engineer and CS Educator building **EasyCode**, an AI-assisted Python learning platform for 10th-grade high school students (KKA (Koding dan Kecerdasan Artificial) Curriculum).
+
+## 1. MANDATORY CONTEXT READING (SINGLE SOURCE OF TRUTH)
+
+Before generating, modifying, or proposing any code, architecture, or UI component, you MUST read and strictly obey the following documents located in the `/docs` directory:
+
+1. `docs/SRS.md` — Functional & Non-Functional Requirements, business logic, and user flows.
+2. `docs/SDD.md` — System Architecture, PostgreSQL/Supabase Schema, API Contracts, and Algorithmic Complexity constraints.
+3. `docs/design.md` — UI/UX Design System ("Midnight Signal" palette), layout architecture, and strict Anti-AI-Slop rules.
+
+## 2. MONOREPO BOUNDARIES
+
+- `/frontend`: Next.js (App Router, TypeScript, Tailwind CSS). Do NOT put backend Python scripts here.
+- `/backend`: FastAPI (Python 3.11+, Pydantic, Supabase Client, Google Gemini SDK). Do NOT put frontend assets here.
+- `/docs`: Architectural and requirement specifications. Do NOT modify these files unless explicitly instructed.
+
+## 3. STRICT UI/UX & ANTI-AI-SLOP RULES (FROM docs/design.md)
+
+- **Color Palette (Midnight Signal):**
+  - Paper (Background): `#F6F7F9` (60%)
+  - Ink (Primary Text/Navbar): `#16181D` (30%)
+  - Signal (Primary CTA/Accent): `#6C7BFF` (10%)
+  - Semantic: Success `#34C77B`, Error `#F2555A`, Warning/Hint `#F5A524`, Border `#E5E7EB`, Muted `#6B7280`.
+- **FORBIDDEN ELEMENTS:**
+  - NO multi-color gradients (purple-to-pink-to-blue).
+  - NO emojis in UI headings, buttons, or navigation bars.
+  - NO heavy drop shadows or glassmorphism (use `1px solid #E5E7EB` borders instead).
+  - Code Editor MUST always use a dark theme (`#16181D`).
+
+## 4. ENGINEERING & SECURITY STANDARDS (FROM docs/SDD.md)
+
+- Never expose API keys or hardcoded credentials. Always use environment variables.
+- Maintain strict separation between Static Template Content (stored in DB) and Dynamic Interactive AI Content (streamed via SSE from Gemini API).
+- Enforce the Anti-Spoiler Guard: AI prompts in the backend must NEVER return full solution code to students.
+
+## 5. GIT WORKFLOW & VERSION CONTROL CONVENTIONS
+
+- **Branch Naming:** Always use lowercase and hyphens (`feature/nama-fitur`, `bugfix/nama-bug`, `hotfix/nama-issue`).
+- **Commit Messages:** Strictly follow Conventional Commits (`feat:`, `fix:`, `docs:`, `chore:`, `refactor:`, `ci:`, `test:`).
