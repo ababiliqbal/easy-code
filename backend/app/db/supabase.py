@@ -1,11 +1,12 @@
-from typing import Optional
-from supabase import create_client, Client
+
+from supabase import Client, create_client
+
 from app.core.config import settings
 
-_supabase_client: Optional[Client] = None
+_supabase_client: Client | None = None
 
 
-def get_supabase_client() -> Optional[Client]:
+def get_supabase_client() -> Client | None:
     """
     Returns the singleton Supabase client instance.
     Initializes the client using SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY if configured.
@@ -20,12 +21,12 @@ def get_supabase_client() -> Optional[Client]:
                 settings.SUPABASE_URL,
                 settings.SUPABASE_SERVICE_ROLE_KEY,
             )
-        except Exception:
+        except Exception:  # noqa: BLE001
             _supabase_client = None
 
     return _supabase_client
 
 
 # Module-level singleton instance (evaluated if credentials are present at import)
-supabase: Optional[Client] = get_supabase_client()
+supabase: Client | None = get_supabase_client()
 

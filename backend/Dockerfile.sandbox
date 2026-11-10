@@ -1,0 +1,21 @@
+FROM python:3.11-alpine
+
+# Prevent Python from writing bytecode and enable unbuffered output
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1
+
+# Create non-root group and user without password and without root privileges
+RUN addgroup -S sandboxuser && \
+    adduser -S -D -G sandboxuser -s /sbin/nologin -h /sandbox sandboxuser
+
+# Setup restricted workspace directory
+WORKDIR /sandbox
+
+RUN chown -R sandboxuser:sandboxuser /sandbox && \
+    chmod 750 /sandbox
+
+# Switch to non-root sandboxuser
+USER sandboxuser
+
+CMD ["python3"]
+
