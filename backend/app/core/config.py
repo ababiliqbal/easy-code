@@ -1,6 +1,6 @@
 import json
 from pathlib import Path
-from typing import List, Union
+
 from pydantic import field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
@@ -19,11 +19,11 @@ class Settings(BaseSettings):
     PORT: int = 8888
     SUPABASE_URL: str = ""
     SUPABASE_SERVICE_ROLE_KEY: str = ""
-    GEMINI_API_KEYS: Union[List[str], str] = []
+    GEMINI_API_KEYS: list[str] | str = []
 
     @field_validator("GEMINI_API_KEYS", mode="after")
     @classmethod
-    def parse_gemini_api_keys(cls, v: Union[List[str], str]) -> List[str]:
+    def parse_gemini_api_keys(cls, v: list[str] | str) -> list[str]:
         """
         Parses a comma-separated string of Gemini API keys into a list of strings.
         Supports key rotation and fallback strategies when facing HTTP 429 rate limits.
@@ -37,8 +37,8 @@ class Settings(BaseSettings):
                     parsed = json.loads(trimmed)
                     if isinstance(parsed, list):
                         return [str(k).strip() for k in parsed if str(k).strip()]
-                except Exception:
-                    pass
+                except (json.JSONDecodeError, ValueError):
+                    return [key.strip() for key in trimmed.split(",") if key.strip()]
             return [key.strip() for key in trimmed.split(",") if key.strip()]
         if isinstance(v, list):
             return [str(key).strip() for key in v if str(key).strip()]

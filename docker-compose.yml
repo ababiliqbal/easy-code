@@ -1,0 +1,12 @@
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: easycode-backend
+    ports:
+      - "8888:8888"
+    env_file:
+      - ./backend/.env
+    restart: unless-stopped
+
